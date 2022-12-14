@@ -37,3 +37,20 @@ class TestSortBoardGames:
 
         # Check the first price is lower than the second price
         assert float(product_1.replace('$', '')) <= float(product_2.replace('$', ''))
+
+    def test_fail_check_lowest_prices(self):
+        try:
+            driver.find_element(By.XPATH, "//a[@href='https://www.miniaturemarket.com/board-games.html']").click()
+            cookies = driver.find_element(By.CSS_SELECTOR, "button#onetrust-accept-btn-handler")
+            cookies.click()
+            driver.find_element(By.PARTIAL_LINK_TEXT, "3 and up").click()
+            driver.find_element(By.CSS_SELECTOR, ".sort-mode.control-set").click()
+            driver.find_element(By.CSS_SELECTOR, "[title='Price ($ - $$$)']").click()
+            product_1 = \
+            driver.find_elements(By.XPATH, "//span[text()='Our Price:']/following-sibling::span[@class='price']")[0].text
+
+            assert product_1 == "$4.49"
+            print("Test passed")
+
+        except Exception as e:
+            print("Test Failed, see error", str(e))
