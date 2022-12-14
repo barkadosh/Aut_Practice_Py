@@ -4,6 +4,7 @@ from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriv
 from webdriver_manager.chrome import ChromeDriverManager
 import event_listener
 
+
 class TestSortBoardGames:
     @classmethod
     def setup_class(cls):
