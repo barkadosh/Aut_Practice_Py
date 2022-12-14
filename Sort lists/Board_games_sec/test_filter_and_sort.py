@@ -9,8 +9,6 @@ import xml.etree.ElementTree as ET
 #from my_event_listener import EventListener
 
 
-
-
 class TestSortBoardGames:
     @classmethod
     def setup_class(cls):
