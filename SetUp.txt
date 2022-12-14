@@ -1,0 +1,27 @@
+
+install selenium - cd v
+(can install specific version with: pip install selenium=={version number})
+
+install pytest - pip install -U pytest
+
+Check selenium version !!!! - > pip show selenium
+
+Upgrade selenium version - > pip install selenium==...
+https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4/
+
+Check pytest version - pytest --version
+Upgrade pytest version - pip install --upgrade pytest
+
+Settings for chrom driver manager !!! - https://github.com/SergeyPirogov/webdriver_manager#use-with-chrome
+** https://stackoverflow.com/questions/65940622/unresolved-reference-error-from-webdriver-manager-chrome-import-chromedriverm
+
+Install webdriver manager: pip install webdriver-manager
+
+
+For smart assertions - pip install smart-assertions
+
+install appium - pip install appium-python-client
+
+
+**If there's problems with pip :  https://stackoverflow.com/questions/18363022/importerror-no-module-named-pip
+(search for windows responses)
