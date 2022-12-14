@@ -31,9 +31,9 @@ class TestSortBoardGames:
         # Sort by lowest price
         driver.find_element(By.CSS_SELECTOR, ".sort-mode.control-set").click()
         driver.find_element(By.CSS_SELECTOR, "[title='Price ($ - $$$)']").click()
-        # Check price on first product
+        # Get price on first product
         product_1 = driver.find_elements(By.XPATH,"//span[text()='Our Price:']/following-sibling::span[@class='price']")[0].text
-        # Check price on second product
+        # Get price on second product
         product_2 = driver.find_elements(By.XPATH,"//span[text()='Our Price:']/following-sibling::span[@class='price']")[1].text
 
         # Check the first price is lower than the second price
@@ -41,15 +41,20 @@ class TestSortBoardGames:
 
     def test_fail_check_lowest_prices(self):
         try:
+            # Click on Board Games
             driver.find_element(By.XPATH, "//a[@href='https://www.miniaturemarket.com/board-games.html']").click()
+            # Accept cookies
             cookies = driver.find_element(By.CSS_SELECTOR, "button#onetrust-accept-btn-handler")
             cookies.click()
+            # Filter by Age
             driver.find_element(By.PARTIAL_LINK_TEXT, "3 and up").click()
+            # Sort by lowest price
             driver.find_element(By.CSS_SELECTOR, ".sort-mode.control-set").click()
             driver.find_element(By.CSS_SELECTOR, "[title='Price ($ - $$$)']").click()
+            # Get price on first product
             product_1 = \
             driver.find_elements(By.XPATH, "//span[text()='Our Price:']/following-sibling::span[@class='price']")[0].text
-
+            # Check if element is the lowest value
             assert product_1 == "$4.49"
             print("Test passed")
 
