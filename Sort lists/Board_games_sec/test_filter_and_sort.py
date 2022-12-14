@@ -1,3 +1,4 @@
+import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
@@ -54,3 +55,4 @@ class TestSortBoardGames:
 
         except Exception as e:
             print("Test Failed, see error", str(e))
+            pytest.fail()
