@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
 from webdriver_manager.chrome import ChromeDriverManager
-import event_listener
+from event_listener import EventListener
 
 
 class TestSortBoardGames:
@@ -11,7 +11,7 @@ class TestSortBoardGames:
     def setup_class(cls):
         global driver
         edriver = webdriver.Chrome(ChromeDriverManager().install())
-        driver = EventFiringWebDriver(edriver, event_listener.EventListener())
+        driver = EventFiringWebDriver(edriver, EventListener())
         driver.get("https://www.miniaturemarket.com/")
         driver.maximize_window()
         driver.implicitly_wait(5)
