@@ -5,11 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
 import xml.etree.ElementTree as ET
-
 #https://docs.python.org/3/library/xml.etree.elementtree.html
-
-
 #from my_event_listener import EventListener
+
+
 
 
 class TestSortBoardGames:
@@ -76,6 +75,7 @@ class TestSortBoardGames:
 def get_data(node_name):
     root = ET.parse('./Congif.xml').getroot()
     return root.find(".//" + node_name).text
+
 
 class TestFromFile:
     @classmethod
