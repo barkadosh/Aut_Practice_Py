@@ -4,6 +4,10 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
+import xml.etree.ElementTree as ET
+
+#https://docs.python.org/3/library/xml.etree.elementtree.html
+
 
 #from my_event_listener import EventListener
 
@@ -67,3 +71,35 @@ class TestSortBoardGames:
         except Exception as e:
             print("Test Failed, see error", str(e))
             pytest.fail()
+
+
+def get_data(node_name):
+    root = ET.parse('./Congif.xml').getroot()
+    return root.find(".//" + node_name).text
+
+class TestFromFile:
+    @classmethod
+    def setup_class(cls):
+        global driver
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        driver.get(get_data('Url'))
+        driver.maximize_window()
+        driver.implicitly_wait(5)
+
+    @classmethod
+    def teardown_class(cls):
+        driver.quit()
+
+    def test_fail_check_lowest_price_from_a_file(self):
+        driver.find_element(By.XPATH, "//a[@href='https://www.miniaturemarket.com/board-games.html']").click()
+        cookies = driver.find_element(By.CSS_SELECTOR, "button#onetrust-accept-btn-handler")
+        cookies.click()
+        driver.find_element(By.PARTIAL_LINK_TEXT, "3 and up").click()
+        driver.find_element(By.CSS_SELECTOR, ".sort-mode.control-set").click()
+        driver.find_element(By.CSS_SELECTOR, "[title='Price ($ - $$$)']").click()
+        product_1 = \
+            driver.find_elements(By.XPATH, "//span[text()='Our Price:']/following-sibling::span[@class='price']")[
+                0].text
+
+        assert product_1 == get_data('Expected_min_price')
+
