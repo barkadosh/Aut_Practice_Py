@@ -1,2 +1,2 @@
-# buying_board_games
+# Buying_Boardgames
 Practice - Automation scripts in Python on Miniature Market
