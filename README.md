@@ -1,2 +1,2 @@
 # 
-Practice - Automation scripts in Python on Miniature Market
+Practice - Automation scripts in Python 
