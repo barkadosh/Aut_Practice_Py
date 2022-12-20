@@ -31,7 +31,7 @@ class TestAutocomplete:
         print(product2)
         assert product2.__contains__("banana")
         assert product1 != product2
-        #search_bar.clear()     # not always works - can do refresh either, the site blocks automation
+        #search_bar.clear()     # not always works - can't do refresh either, the site blocks automation
         driver.find_elements(By.CSS_SELECTOR, "i.ld.ld-Close")[1].click()
         time.sleep(3)
         search_bar.send_keys("b")
