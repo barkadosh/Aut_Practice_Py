@@ -38,6 +38,7 @@ class TestAutocomplete:
         product3 = driver.find_elements(By.CSS_SELECTOR, "span.b.lh-title")[0].text
         print(product3)
         assert product1 == product3
+        time.sleep(3)
 
 
 
