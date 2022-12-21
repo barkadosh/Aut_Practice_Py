@@ -25,3 +25,10 @@ install appium - pip install appium-python-client
 
 **If there's problems with pip :  https://stackoverflow.com/questions/18363022/importerror-no-module-named-pip
 (search for windows responses)
+
+**Allure Reports**
+Download from here-
+https://github.com/allure-framework/allure2/releases
+* Download lest version zip file
+* Put the folder under the main folder of the automation project
+* Add in system environment variables the path to the bin folder
