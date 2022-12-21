@@ -32,3 +32,5 @@ https://github.com/allure-framework/allure2/releases
 * Download lest version zip file
 * Put the folder under the main folder of the automation project
 * Add in system environment variables the path to the bin folder
+
+install to work with pytest: pip install allure-pytest
