@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import SaveScreenShot
 
 
 class TestActionsChains:
@@ -26,38 +27,37 @@ class TestActionsChains:
         time.sleep(5)
         driver.quit()
 
-    @allure.title("Drag and drop")
+    @allure.title("TC01 - Drag and drop")
     @allure.description("This test a drag and drop in the app")
     def test_drag_and_drop(self):
         try:
+            self.step_go_to_dnd_app()
             self.step_drag_and_drop()
             self.step_verify_dnd()
         except:
-            self.attach_file()
+            SaveScreenShot.attach_file(self)
             pytest.fail("Test failed, see attached screen shot")
 
-    @allure.step("Open drag and drop page")
+    @allure.step("Step1-Open drag and drop page")
     def step_go_to_dnd_app(self):
         driver.find_element(By.CSS_SELECTOR, "div.card.mt-4.top-card:nth-child(5)").click()
-        droppable_menu = WebDriverWait(driver, 3).until(
+        droppable_menu = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div:nth-child(5)>div>ul>li#item-3")))
         driver.execute_script("arguments[0].click();", droppable_menu)
 
-    @allure.step("Drag and drop")
+    @allure.step("Step2-Drag and drop")
     def step_drag_and_drop(self):
         action = ActionChains(driver)
         draggable = driver.find_element(By.ID, "draggable")
         droppable = driver.find_element(By.ID, "droppable")
         action.drag_and_drop(draggable, droppable).perform()
 
-    @allure.step("Verify document dropped")
+    @allure.step("Step3-Verify document dropped")
     def step_verify_dnd(self):
-        droppable = driver.find_element(By.CSS_SELECTOR, "div.trash")
-        assert droppable.get_attribute("class") == "trash full"
-
-    def attach_file(self):
-        image = "./screen-shots/screen.png"
-        driver.get_screenshot_as_file(image)
-        allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
-
-
+        droppable = driver.find_element(By.XPATH, "//div[@class='drop-box ui-droppable ui-state-highlight']/p")
+        assert droppable.text == "Dropped!"
+    #
+    # def attach_file(self):
+    #     image = "./screen-shots/screen.png"
+    #     driver.get_screenshot_as_file(image)
+    #     allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
