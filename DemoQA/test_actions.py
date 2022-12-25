@@ -1,6 +1,7 @@
+import time
+
 import allure
 import pytest
-import time
 from selenium import webdriver
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
@@ -8,14 +9,6 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-#from SaveScreenShot import attach_file
-
-
-def attach_file():
-    image = "./screen-shots/screen.png"
-    driver.get_screenshot_as_file(image)
-    allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
 
 
 class TestActionsChains:
@@ -31,19 +24,19 @@ class TestActionsChains:
 
     @classmethod
     def teardown_class(cls):
-        time.sleep(5)
         driver.quit()
 
     @allure.title("TC01 - Drag and drop")
     @allure.description("This test a drag and drop in the app")
     def test_drag_and_drop(self):
         try:
+            self.delete_ads()
             self.step_go_to_dnd_app()
             self.step_drag_and_drop()
             self.step_verify_dnd()
-            attach_file()
+            self.attach_file()
         except:
-            attach_file()
+            self.attach_file()
             pytest.fail("Test failed, see attached screen shot")
 
     @allure.step("Step1-Open drag and drop page")
@@ -52,6 +45,8 @@ class TestActionsChains:
         droppable_menu = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div:nth-child(5)>div>ul>li#item-3")))
         driver.execute_script("arguments[0].click();", droppable_menu)
+        driver.execute_script("document.getElementById('adplus-anchor').style.display = 'none';")
+        # Remove google ad that was interrupting
 
     @allure.step("Step2-Drag and drop")
     def step_drag_and_drop(self):
@@ -59,8 +54,31 @@ class TestActionsChains:
         draggable = driver.find_element(By.ID, "draggable")
         droppable = driver.find_element(By.ID, "droppable")
         action.drag_and_drop(draggable, droppable).perform()
+        time.sleep(5)
 
     @allure.step("Step3-Verify document dropped")
     def step_verify_dnd(self):
-        droppable = driver.find_element(By.XPATH, "//div[@class='drop-box ui-droppable ui-state-highlight']/p")
+        droppable = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//div[@class='drop-box ui-droppable ui-state-highlight']/p")))
+
         assert droppable.text == "Dropped!"
+
+    def attach_file(self):
+        image = "./screen-shots/screen.png"
+        driver.get_screenshot_as_file(image)
+        allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
+
+    def delete_ads(self):
+        all_iframes = driver.find_elements(By.TAG_NAME, "iframe")
+        if len(all_iframes) > 0:
+            print("Ad Found\n")
+            driver.execute_script("""
+                var elems = document.getElementsByTagName("iframe");
+                for(var i = 0, max = elems.length; i < max; i++)
+                     {
+                         elems[i].hidden=true;
+                     }
+                                  """)
+            print('Total Ads: ' + str(len(all_iframes)))
+        else:
+            print('No frames found')
