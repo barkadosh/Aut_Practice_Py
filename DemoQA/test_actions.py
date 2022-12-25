@@ -32,8 +32,8 @@ class TestActionsChains:
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div:nth-child(5)>div>ul>li#item-3")))
         driver.execute_script("arguments[0].click();", droppable_menu)
         action = ActionChains(driver)
-        draggable = driver.find_elements(By.CSS_SELECTOR, "img")[0]
-        droppable = driver.find_element(By.CSS_SELECTOR, "div.trash")
+        draggable = driver.find_element(By.ID, "draggable")
+        droppable = driver.find_element(By.ID, "droppable")
         action.drag_and_drop(draggable, droppable).perform()
 
 
