@@ -8,7 +8,14 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import SaveScreenShot
+
+#from SaveScreenShot import attach_file
+
+
+def attach_file():
+    image = "./screen-shots/screen.png"
+    driver.get_screenshot_as_file(image)
+    allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
 
 
 class TestActionsChains:
@@ -34,8 +41,9 @@ class TestActionsChains:
             self.step_go_to_dnd_app()
             self.step_drag_and_drop()
             self.step_verify_dnd()
+            attach_file()
         except:
-            SaveScreenShot.attach_file(self)
+            attach_file()
             pytest.fail("Test failed, see attached screen shot")
 
     @allure.step("Step1-Open drag and drop page")
@@ -56,8 +64,3 @@ class TestActionsChains:
     def step_verify_dnd(self):
         droppable = driver.find_element(By.XPATH, "//div[@class='drop-box ui-droppable ui-state-highlight']/p")
         assert droppable.text == "Dropped!"
-    #
-    # def attach_file(self):
-    #     image = "./screen-shots/screen.png"
-    #     driver.get_screenshot_as_file(image)
-    #     allure.attach.file(image, attachment_type=allure.attachment_type.PNG)

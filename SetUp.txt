@@ -26,7 +26,8 @@ install appium - pip install appium-python-client
 **If there's problems with pip :  https://stackoverflow.com/questions/18363022/importerror-no-module-named-pip
 (search for windows responses)
 
-**Allure Reports**
+**********************************************************************************
+******Allure Reports*****
 Download from here-
 https://github.com/allure-framework/allure2/releases
 * Download lest version zip file
@@ -34,3 +35,8 @@ https://github.com/allure-framework/allure2/releases
 * Add in system environment variables the path to the bin folder
 
 install to work with pytest: pip install allure-pytest
+
+To run with allure: "pytest -v -s test_allure.py --alluredir ./allure-results"
+To start the server and open the report: "allure serve allure-results"
+To stop the server: Ctrl+c > y
+**********************************************************************************
