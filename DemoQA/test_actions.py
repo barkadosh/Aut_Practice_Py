@@ -68,17 +68,3 @@ class TestActionsChains:
         driver.get_screenshot_as_file(image)
         allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
 
-    def delete_ads(self):
-        all_iframes = driver.find_elements(By.TAG_NAME, "iframe")
-        if len(all_iframes) > 0:
-            print("Ad Found\n")
-            driver.execute_script("""
-                var elems = document.getElementsByTagName("iframe");
-                for(var i = 0, max = elems.length; i < max; i++)
-                     {
-                         elems[i].hidden=true;
-                     }
-                                  """)
-            print('Total Ads: ' + str(len(all_iframes)))
-        else:
-            print('No frames found')
