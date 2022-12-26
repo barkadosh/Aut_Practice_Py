@@ -27,7 +27,7 @@ class TestActionsChains:
         driver.quit()
 
     @allure.title("TC01 - Drag and drop")
-    @allure.description("This test a drag and drop in the app")
+    @allure.description("This TC test a drag and drop in the app")
     def test_drag_and_drop(self):
         try:
             self.step_go_to_dnd_app()
@@ -68,7 +68,10 @@ class TestActionsChains:
         driver.get_screenshot_as_file(image)
         allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
 
-    #     Select multiple
+
+    @allure.title("TC02 - Select multiple")
+    @allure.description("This TC test a multi select in a menu")
+    #
     #     action = ActionChains(driver)
     #     list1 = driver.find_elements()
     #     action.click_and_hold(list1[0]).click_and_hold(list1[1]).click().perform()
