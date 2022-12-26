@@ -30,14 +30,14 @@ class TestActionsChains:
     @allure.description("This test a drag and drop in the app")
     def test_drag_and_drop(self):
         try:
-            self.delete_ads()
             self.step_go_to_dnd_app()
             self.step_drag_and_drop()
             self.step_verify_dnd()
-            self.attach_file()
         except:
-            self.attach_file()
             pytest.fail("Test failed, see attached screen shot")
+        finally:
+            self.attach_file()
+
 
     @allure.step("Step1-Open drag and drop page")
     def step_go_to_dnd_app(self):
@@ -68,3 +68,15 @@ class TestActionsChains:
         driver.get_screenshot_as_file(image)
         allure.attach.file(image, attachment_type=allure.attachment_type.PNG)
 
+    #     Select multiple
+    #     action = ActionChains(driver)
+    #     list1 = driver.find_elements()
+    #     action.click_and_hold(list1[0]).click_and_hold(list1[1]).click().perform()
+    #     double click
+    #     dclick = driver.find_element("div:nth-child(4)>div>ul>li#item-8")
+    #     action.double_click(dclick).perform()
+    #
+    #     # right click
+    #
+    #     image = driver.find_element()
+    #     action.context_click(image).perform()
