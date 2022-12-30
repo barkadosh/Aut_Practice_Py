@@ -49,7 +49,7 @@ class TestActionsChains:
         driver.execute_script("document.getElementById('adplus-anchor').style.display = 'none';")
         driver.execute_script("document.getElementById('RightSide_Advertisement').style.display = 'none';")
         # Remove google ad that was interrupting
-
+#
     @allure.step("Step2-Drag and drop")
     def step_drag_and_drop(self):
         action = ActionChains(driver)
