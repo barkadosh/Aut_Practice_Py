@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from ScreenShot import screenshot
 
-
 # Ex - https://drive.google.com/file/d/1cONVuyyEd9u8Z95BBjdM0tvKFoNfaFzU/view
 # To run with allure:  pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
 
