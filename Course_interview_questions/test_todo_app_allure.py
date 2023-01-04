@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from ScreenShot import screenshot
+from ScreenShotAut import screenshotaut
 
 # Ex - https://drive.google.com/file/d/1cONVuyyEd9u8Z95BBjdM0tvKFoNfaFzU/view
 # To run with allure:  pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
@@ -36,7 +36,7 @@ class TestToDoActionsApp:
     def test_tc01(self):
         try:
             self.step_add_assignment()
-            screenshot(driver)
+            screenshotaut(driver)
             self.step_check_task_exist()
 
         except Exception as error:
@@ -44,7 +44,7 @@ class TestToDoActionsApp:
             pytest.fail("View screen shot")
 
         finally:
-            screenshot(driver)
+            screenshotaut(driver)
 
     @allure.step("Create test task")
     def step_add_assignment(self):
