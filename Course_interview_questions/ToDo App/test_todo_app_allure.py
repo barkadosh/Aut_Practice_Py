@@ -73,8 +73,8 @@ class TestToDoActionsApp:
     def step_delete_task(self):
         action = ActionChains(driver)
         x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
-        time.sleep(1)
-        action.move_to_element(x_button).click().perform()
+        action.move_to_element(x_button).perform()
+        x_button.click()
 
     @allure.step("Validate the task was deleted")
     def step_check_task_delete(self):
