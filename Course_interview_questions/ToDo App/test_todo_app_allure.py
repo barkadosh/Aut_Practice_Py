@@ -1,3 +1,5 @@
+import sys
+
 import allure
 import pytest
 import time
@@ -6,7 +8,8 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from ScreenShotAut import screenshotaut
+from TakeScreenShot import take_screenshot
+
 
 # Ex - https://drive.google.com/file/d/1cONVuyyEd9u8Z95BBjdM0tvKFoNfaFzU/view
 # To run with allure:  pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
@@ -28,15 +31,11 @@ class TestToDoActionsApp:
         time.sleep(2)
         driver.quit()
 
-    todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
-    task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
-
     @allure.title("TC 01 - Create assignment")
     @allure.description("Creating a new assignment")
     def test_tc01(self):
         try:
             self.step_add_assignment()
-            screenshotaut(driver)
             self.step_check_task_exist()
 
         except Exception as error:
@@ -44,34 +43,44 @@ class TestToDoActionsApp:
             pytest.fail("View screen shot")
 
         finally:
-            screenshotaut(driver)
+            take_screenshot(driver)
 
     @allure.step("Create test task")
     def step_add_assignment(self):
-        self.todo_bar.send_keys("test")
+        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
+        todo_bar.send_keys("test" + Keys.RETURN)
 
     @allure.step("Validate the task was created and named 'test'")
     def step_check_task_exist(self):
-        assert self.task.text == "test"
+        task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
+        assert task.text == "test"
 
-    # @allure.title("TC 02 - Delete an assignment")
-    # @allure.description("Create a new assignment and delete it")
-    # def test_tc02(self):
-    #     try:
-    #
-    #     except:
-    #         pytest.fail("View screen shot")
-    #
-    #     finally:
-    #         screenshot()
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    #
+    @allure.title("TC 02 - Delete an assignment")
+    @allure.description("Create a new assignment and delete it")
+    def test_tc02(self):
+        try:
+            self.step_delete_task()
+            self.step_check_task_delete()
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Delete a task")
+    def step_delete_task(self):
+        action = ActionChains(driver)
+        x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
+        time.sleep(1)
+        action.move_to_element(x_button).click().perform()
+
+    @allure.step("Validate the task was deleted")
+    def step_check_task_delete(self):
+        task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
+        assert not task
+
     #
     # @allure.title("TC 03 - Rename an assignment")
     # @allure.description("Create new assignment and rename it")
