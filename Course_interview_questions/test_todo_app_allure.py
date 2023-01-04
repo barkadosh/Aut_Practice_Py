@@ -8,7 +8,9 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from ScreenShot import screenshot
 
+
 # Ex - https://drive.google.com/file/d/1cONVuyyEd9u8Z95BBjdM0tvKFoNfaFzU/view
+# To run with allure:  pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
 
 
 class TestToDoActionsApp:
@@ -29,14 +31,17 @@ class TestToDoActionsApp:
 
     todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
     task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
+
     @allure.title("TC 01 - Create assignment")
     @allure.description("Creating a new assignment")
     def test_tc01(self):
         try:
             self.step_add_assignment()
+            screenshot(driver)
+            self.step_check_task_exist()
 
-
-        except:
+        except Exception as error:
+            print(error)
             pytest.fail("View screen shot")
 
         finally:
@@ -46,10 +51,9 @@ class TestToDoActionsApp:
     def step_add_assignment(self):
         self.todo_bar.send_keys("test")
 
-    @allure.step("Validate the task was created")
-    def step_(self):
-       assert self.task.text == "test"
-
+    @allure.step("Validate the task was created and named 'test'")
+    def step_check_task_exist(self):
+        assert self.task.text == "test"
 
     # @allure.title("TC 02 - Delete an assignment")
     # @allure.description("Create a new assignment and delete it")

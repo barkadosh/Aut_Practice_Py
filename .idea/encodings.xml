@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Ans/test_rendering_list.py" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Course_interview_questions/test_todo_app_allure.py" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/DemoQA/test_actions.py" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/Sort lists/Board_games_sec/test_filter_and_sort.py" charset="windows-1252" />
   </component>
