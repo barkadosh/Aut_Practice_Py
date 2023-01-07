@@ -4,6 +4,7 @@ import allure
 import pytest
 import time
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -12,7 +13,7 @@ from TakeScreenShot import take_screenshot
 
 
 # Ex - https://drive.google.com/file/d/1cONVuyyEd9u8Z95BBjdM0tvKFoNfaFzU/view
-# To run with allure:  pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
+# To run with allure:  python -m pytest -v -s test_todo_app_allure.py --alluredir ./allure-results
 
 
 class TestToDoActionsApp:
@@ -35,7 +36,7 @@ class TestToDoActionsApp:
     @allure.description("Creating a new assignment")
     def test_tc01(self):
         try:
-            self.step_add_assignment()
+            self.step_add_task()
             self.step_check_task_exist()
 
         except Exception as error:
@@ -46,7 +47,7 @@ class TestToDoActionsApp:
             take_screenshot(driver)
 
     @allure.step("Create test task")
-    def step_add_assignment(self):
+    def step_add_task(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
         todo_bar.send_keys("test" + Keys.RETURN)
 
@@ -55,10 +56,12 @@ class TestToDoActionsApp:
         task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
         assert task.text == "test"
 
-    @allure.title("TC 02 - Delete an assignment")
-    @allure.description("Create a new assignment and delete it")
+    @pytest.mark.xfail
+    @allure.title("TC 02-A - Delete a task and check the task was deleted -fail")
+    @allure.description("Create a new task and delete it")
     def test_tc02(self):
         try:
+            self.step_add_task2()
             self.step_delete_task()
             self.step_check_task_delete()
 
@@ -69,17 +72,59 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Delete a task")
+    @allure.step("Create test2 task")
+    def step_add_task2(self):
+        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
+        todo_bar.send_keys("test2" + Keys.RETURN)
+
+    @allure.step("Delete test")
     def step_delete_task(self):
         action = ActionChains(driver)
+        task = driver.find_element(By.CSS_SELECTOR, ".view")
+        action.move_to_element(task).perform()
         x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
-        action.move_to_element(x_button).perform()
         x_button.click()
 
-    @allure.step("Validate the task was deleted")
+    @allure.step("Validate test2 was deleted")
     def step_check_task_delete(self):
-        task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
-        assert not task
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.XPATH, "//*[text()='test2']")
+            # Assertions about expected exceptions -
+            # https://docs.pytest.org/en/latest/how-to/assert.html#assertions-about-expected-exceptions
+
+    @allure.title("TC 02-B - Delete a task and check the task was deleted -Success")
+    @allure.description("Create a new task and delete it")
+    def test_tc02(self):
+        try:
+            self.step_add_task2()
+            self.step_delete_task()
+            self.step_check_task_delete()
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Create test3 task")
+    def step_add_task2(self):
+        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
+        todo_bar.send_keys("test3" + Keys.RETURN)
+
+    @allure.step("Delete test3")
+    def step_delete_task(self):
+        action = ActionChains(driver)
+        task = driver.find_elements(By.CSS_SELECTOR, ".view")[1]
+        action.move_to_element(task).perform()
+        x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
+        x_button.click()
+
+    @allure.step("Validate the test3 task was deleted")
+    def step_check_task_delete(self):
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.XPATH, "//*[text()='test3']")
+
 
     #
     # @allure.title("TC 03 - Rename an assignment")
