@@ -81,7 +81,7 @@ class TestToDoActionsApp:
         action = ActionChains(driver)
         task = driver.find_element(By.XPATH, "//*[text()='test2']")
         action.move_to_element(task).perform()
-        x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
+        x_button = driver.find_elements(By.CSS_SELECTOR, "button.destroy")[1]
         x_button.click()
 
     @allure.step("Validate test2 was deleted")
