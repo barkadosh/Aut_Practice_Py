@@ -56,8 +56,7 @@ class TestToDoActionsApp:
         task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
         assert task.text == "test"
 
-    @pytest.mark.xfail
-    @allure.title("TC 02-A - Delete a task and check the task was deleted -fail")
+    @allure.title("TC 02 - Delete a task and check the task was deleted")
     @allure.description("Create a new task and delete it")
     def test_tc02(self):
         try:
@@ -77,10 +76,10 @@ class TestToDoActionsApp:
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
         todo_bar.send_keys("test2" + Keys.RETURN)
 
-    @allure.step("Delete test")
+    @allure.step("Delete test2")
     def step_delete_task(self):
         action = ActionChains(driver)
-        task = driver.find_element(By.CSS_SELECTOR, ".view")
+        task = driver.find_element(By.XPATH, "//*[text()='test2']")
         action.move_to_element(task).perform()
         x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
         x_button.click()
@@ -92,38 +91,7 @@ class TestToDoActionsApp:
             # Assertions about expected exceptions -
             # https://docs.pytest.org/en/latest/how-to/assert.html#assertions-about-expected-exceptions
 
-    @allure.title("TC 02-B - Delete a task and check the task was deleted -Success")
-    @allure.description("Create a new task and delete it")
-    def test_tc02(self):
-        try:
-            self.step_add_task2()
-            self.step_delete_task()
-            self.step_check_task_delete()
 
-        except Exception as error:
-            print(error)
-            pytest.fail("View screen shot")
-
-        finally:
-            take_screenshot(driver)
-
-    @allure.step("Create test3 task")
-    def step_add_task2(self):
-        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
-        todo_bar.send_keys("test3" + Keys.RETURN)
-
-    @allure.step("Delete test3")
-    def step_delete_task(self):
-        action = ActionChains(driver)
-        task = driver.find_elements(By.CSS_SELECTOR, ".view")[1]
-        action.move_to_element(task).perform()
-        x_button = driver.find_element(By.CSS_SELECTOR, "button.destroy")
-        x_button.click()
-
-    @allure.step("Validate the test3 task was deleted")
-    def step_check_task_delete(self):
-        with pytest.raises(NoSuchElementException):
-            driver.find_element(By.XPATH, "//*[text()='test3']")
 
 
     #
