@@ -37,7 +37,7 @@ class TestToDoActionsApp:
     def test_tc01(self):
         try:
             self.step_add_task()
-            self.step_check_task_exist()
+            self.step_check_task_appears()
 
         except Exception as error:
             print(error)
@@ -52,7 +52,7 @@ class TestToDoActionsApp:
         todo_bar.send_keys("New Task" + Keys.RETURN)
 
     @allure.step("Validate the task was created and named 'New Task'")
-    def step_check_task_exist(self):
+    def step_check_task_appears(self):
         task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
         assert task.text == "New Task"
 
@@ -72,7 +72,7 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Create 'Task to delete' task")
+    @allure.step("Create new task")
     def step_add_task2(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
         todo_bar.send_keys("Task to delete" + Keys.RETURN)
@@ -108,7 +108,7 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Create 'Task to rename' task")
+    @allure.step("Create new task")
     def step_add_task3(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
         todo_bar.send_keys("Task to rename" + Keys.RETURN)
@@ -126,9 +126,78 @@ class TestToDoActionsApp:
         task_field = driver.find_elements(By.XPATH, "//div[@class='view']/label")[1]
         assert task_field.text == "Renamed Task"
 
-    # @allure.title("TC 04 - Mark task as completed")
-    # @allure.description("Create new task and mark it as completed")
-    # def test_tc04(self):
+    @allure.title("TC 04 - Mark task as completed")
+    @allure.description("Create new task and mark it as completed")
+    def test_tc04(self):
+        try:
+            self.step_add_task4()
+            take_screenshot(driver)
+            self.step_mark_task_complete()
+            self.step_validate_task_in_complete_state()
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Create new task")
+    def step_add_task4(self):
+        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
+        todo_bar.send_keys("Completed Task" + Keys.RETURN)
+
+    @allure.step("Click on the checkbox to mark the task as completed")
+    def step_mark_task_complete(self):
+        driver.find_elements(By.CSS_SELECTOR, "input.toggle")[2].click()
+
+    @allure.step("Validate task marked as completed")
+    def step_validate_task_in_complete_state(self):
+        assert driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
+
+    @allure.title("TC 05 - Filter the task list")
+    @allure.description("Filter the tasks list to: Completed, Active and All and "
+                        "check relevant tasks appear with each filter")
+    def test_tc05(self):
+        try:
+            self.step_filter_to_active()
+            self.step_validate_no_completed()
+            take_screenshot(driver)
+
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Filter list to show only active tasks")
+    def step_filter_to_active(self):
+        driver.find_element(By.CSS_SELECTOR, "a[href='#/active']").click()
+
+    @allure.step("Check there is no completed tasks in the list")
+    def step_validate_no_completed(self):
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
+        first_task = driver.find_elements(By.CSS_SELECTOR, "div>label[data-reactid]")[0]
+        second_task = driver.find_elements(By.CSS_SELECTOR, "div>label[data-reactid]")[1]
+        assert first_task.text == "New Task", second_task.text == "Renamed Task"
+
+    @allure.step("Filter list to show only completed tasks")
+    def step_filter_to_completed(self):
+        driver.find_element(By.CSS_SELECTOR, "a[href='#/active']").click()
+        #continue!!!
+
+
+
+    #
+    #
+    #
+    # @allure.title("TC 06 - Clear Completed tasks list")
+    # @allure.description("Create completed tasks and delete"
+    #                     " them from the list")
+    # def test_tc06(self):
     #     try:
     #
     #     except:
@@ -136,50 +205,6 @@ class TestToDoActionsApp:
     #
     #     finally:
     #         take_screenshot(driver)
-    #
-    # @allure.step("")
-    # def step_(self):
-
-
-    # @allure.step("")
-    # def step_(self):
-    #
-    #
-    #
-    #
-    # @allure.title("TC 05 - Filter the task list")
-    # @allure.description("Create active and completed task, filter the "
-    #                     "tasks list to: Completed, Active and All and "
-    #                     "check relevant tasks appear with each filter")
-    # def test_tc05(self):
-    #     try:
-    #
-    #     except:
-    #         pytest.fail("View screen shot")
-    #
-    #     finally:
-    #         take_screenshot(driver)
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    #
-    #
-    #
-    # @allure.title("TC 06 - Clear Completed assignments list")
-    # @allure.description("Create completed assignment and clear"
-    #                     " the completed assignments list")
-    # def test_tc02(self):
-    #     try:
-    #
-    #     except:
-    #         pytest.fail("View screen shot")
-    #
-    #     finally:
-    #         screenshot()
     #
     # @allure.step("")
     # def step_(self):
