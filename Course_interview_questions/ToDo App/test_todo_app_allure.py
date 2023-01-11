@@ -119,7 +119,7 @@ class TestToDoActionsApp:
         task_field = driver.find_elements(By.XPATH, "//div[@class='view']/label")[1]
         action.double_click(task_field).perform()
         textfield = driver.find_elements(By.CSS_SELECTOR, "input.edit")[1]
-        textfield.send_keys(Keys.BACKSPACE*14, "Renamed Task", Keys.RETURN)
+        textfield.send_keys(Keys.BACKSPACE * 14, "Renamed Task", Keys.RETURN)
 
     @allure.step("Check the task title changed to 'Renamed Task'")
     def step_validate_name_changed(self):
@@ -161,9 +161,13 @@ class TestToDoActionsApp:
     def test_tc05(self):
         try:
             self.step_filter_to_active()
-            self.step_validate_no_completed()
+            self.step_validate_no_completed_tasks()
             take_screenshot(driver)
-
+            self.step_filter_to_completed()
+            self.step_validate_no_active_tasks()
+            take_screenshot(driver)
+            self.step_filter_to_all()
+            self.step_validate_all_tasks_appear()
 
         except Exception as error:
             print(error)
@@ -176,38 +180,56 @@ class TestToDoActionsApp:
     def step_filter_to_active(self):
         driver.find_element(By.CSS_SELECTOR, "a[href='#/active']").click()
 
-    @allure.step("Check there is no completed tasks in the list")
-    def step_validate_no_completed(self):
+    @allure.step("Check only active tasks appear in the list")
+    def step_validate_no_completed_tasks(self):
         with pytest.raises(NoSuchElementException):
             driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
         first_task = driver.find_elements(By.CSS_SELECTOR, "div>label[data-reactid]")[0]
         second_task = driver.find_elements(By.CSS_SELECTOR, "div>label[data-reactid]")[1]
-        assert first_task.text == "New Task", second_task.text == "Renamed Task"
+        assert first_task.is_displayed(), second_task.is_displayed()
 
     @allure.step("Filter list to show only completed tasks")
     def step_filter_to_completed(self):
-        driver.find_element(By.CSS_SELECTOR, "a[href='#/active']").click()
-        #continue!!!
+        driver.find_element(By.CSS_SELECTOR, "a[href='#/completed']").click()
 
+    @allure.step("Check only completed tasks appear in the list")
+    def step_validate_no_active_tasks(self):
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.XPATH, "//*[text()='New task']")
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.XPATH, "//*[text()='Renamed Task']")
+        assert driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed").is_displayed()
 
+    @allure.step("Filter list to show all tasks")
+    def step_filter_to_all(self):
+        driver.find_element(By.CSS_SELECTOR, "a[href='#/']").click()
 
-    #
-    #
-    #
-    # @allure.title("TC 06 - Clear Completed tasks list")
-    # @allure.description("Create completed tasks and delete"
-    #                     " them from the list")
-    # def test_tc06(self):
-    #     try:
-    #
-    #     except:
-    #         pytest.fail("View screen shot")
-    #
-    #     finally:
-    #         take_screenshot(driver)
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    # @allure.step("")
-    # def step_(self):
+    @allure.step("Check all tasks appear in the list")
+    def step_validate_all_tasks_appear(self):
+        first_task = driver.find_elements(By.CSS_SELECTOR, "ul.todo-list>li")[0]
+        second_task = driver.find_elements(By.CSS_SELECTOR, "ul.todo-list>li")[1]
+        completed_task = driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
+        assert first_task.is_displayed() and second_task.is_displayed() and completed_task.is_displayed()
+
+    @allure.title("TC 06 - Clear Completed tasks list")
+    @allure.description("Clear the completed task from the list")
+    def test_tc06(self):
+        try:
+            self.step_clear_completed()
+            self.step_validate_completed_delete()
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Clear completed task from the list")
+    def step_clear_completed(self):
+        driver.find_element(By.CSS_SELECTOR, "button.clear-completed").click()
+
+    @allure.step("Check the completed task is deleted from the list")
+    def step_validate_completed_delete(self):
+        with pytest.raises(NoSuchElementException):
+            driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
