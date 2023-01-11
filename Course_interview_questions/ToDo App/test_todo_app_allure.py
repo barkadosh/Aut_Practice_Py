@@ -46,21 +46,22 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Create test task")
+    @allure.step("Create new task")
     def step_add_task(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
-        todo_bar.send_keys("test" + Keys.RETURN)
+        todo_bar.send_keys("New Task" + Keys.RETURN)
 
-    @allure.step("Validate the task was created and named 'test'")
+    @allure.step("Validate the task was created and named 'New Task'")
     def step_check_task_exist(self):
         task = driver.find_element(By.CSS_SELECTOR, "div>label[data-reactid]")
-        assert task.text == "test"
+        assert task.text == "New Task"
 
     @allure.title("TC 02 - Delete a task and check the task was deleted")
     @allure.description("Create a new task and delete it")
     def test_tc02(self):
         try:
             self.step_add_task2()
+            take_screenshot(driver)
             self.step_delete_task()
             self.step_check_task_delete()
 
@@ -71,23 +72,23 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Create test2 task")
+    @allure.step("Create 'Task to delete' task")
     def step_add_task2(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
-        todo_bar.send_keys("test2" + Keys.RETURN)
+        todo_bar.send_keys("Task to delete" + Keys.RETURN)
 
-    @allure.step("Delete test2")
+    @allure.step("Delete 'Task to delete'")
     def step_delete_task(self):
         action = ActionChains(driver)
-        task = driver.find_element(By.XPATH, "//*[text()='test2']")
+        task = driver.find_element(By.XPATH, "//*[text()='Task to delete']")
         action.move_to_element(task).perform()
         x_button = driver.find_elements(By.CSS_SELECTOR, "button.destroy")[1]
         x_button.click()
 
-    @allure.step("Validate test2 was deleted")
+    @allure.step("Validate 'Task to delete' was deleted")
     def step_check_task_delete(self):
         with pytest.raises(NoSuchElementException):
-            driver.find_element(By.XPATH, "//*[text()='test2']")
+            driver.find_element(By.XPATH, "//*[text()='Task to delete']")
             # Assertions about expected exceptions -
             # https://docs.pytest.org/en/latest/how-to/assert.html#assertions-about-expected-exceptions
 
@@ -96,7 +97,9 @@ class TestToDoActionsApp:
     def test_tc03(self):
         try:
             self.step_add_task3()
+            take_screenshot(driver)
             self.step_rename_task()
+            self.step_validate_name_changed()
 
         except Exception as error:
             print(error)
@@ -105,55 +108,57 @@ class TestToDoActionsApp:
         finally:
             take_screenshot(driver)
 
-    @allure.step("Create test3 task")
+    @allure.step("Create 'Task to rename' task")
     def step_add_task3(self):
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
-        todo_bar.send_keys("test3" + Keys.RETURN)
+        todo_bar.send_keys("Task to rename" + Keys.RETURN)
 
-    @allure.step("Rename 'test3' to 'NewTest' ")
+    @allure.step("Rename 'Task to rename' to 'Renamed Task' ")
     def step_rename_task(self):
         action = ActionChains(driver)
-        textfield = driver.find_elements(By.XPATH, "//div[@class='view']/label")[0]
-        #driver.execute_script("arguments[0].contentEditable='true';", textfield)
-        action.double_click(textfield).perform()
-        driver.find_elements(By.CSS_SELECTOR, "li.editing")[0].clear()
+        task_field = driver.find_elements(By.XPATH, "//div[@class='view']/label")[1]
+        action.double_click(task_field).perform()
+        textfield = driver.find_elements(By.CSS_SELECTOR, "input.edit")[1]
+        textfield.send_keys(Keys.BACKSPACE*14, "Renamed Task", Keys.RETURN)
 
+    @allure.step("Check the task title changed to 'Renamed Task'")
+    def step_validate_name_changed(self):
+        task_field = driver.find_elements(By.XPATH, "//div[@class='view']/label")[1]
+        assert task_field.text == "Renamed Task"
 
-    # @allure.step("")
-    # def step_(self):
-
-    # @allure.title("TC 04 - Mark assignment as completed")
-    # @allure.description("Create new assignment and mark it as completed")
-    # def test_tc02(self):
+    # @allure.title("TC 04 - Mark task as completed")
+    # @allure.description("Create new task and mark it as completed")
+    # def test_tc04(self):
     #     try:
     #
     #     except:
     #         pytest.fail("View screen shot")
     #
     #     finally:
-    #         screenshot()
+    #         take_screenshot(driver)
     #
     # @allure.step("")
     # def step_(self):
-    #
+
+
     # @allure.step("")
     # def step_(self):
     #
     #
     #
     #
-    # @allure.title("TC 05 - Filter the assignment list")
-    # @allure.description("Create active and completed assignments, filter the "
-    #                     "assignments list to: Completed, Active and All and "
-    #                     "asure relevant assignments appear")
-    # def test_tc02(self):
+    # @allure.title("TC 05 - Filter the task list")
+    # @allure.description("Create active and completed task, filter the "
+    #                     "tasks list to: Completed, Active and All and "
+    #                     "check relevant tasks appear with each filter")
+    # def test_tc05(self):
     #     try:
     #
     #     except:
     #         pytest.fail("View screen shot")
     #
     #     finally:
-    #         screenshot()
+    #         take_screenshot(driver)
     #
     # @allure.step("")
     # def step_(self):
