@@ -213,6 +213,7 @@ class TestToDoActionsApp:
     @allure.description("Clear the completed task from the list")
     def test_tc06(self):
         try:
+            take_screenshot(driver)
             self.step_clear_completed()
             self.step_validate_completed_delete()
 
