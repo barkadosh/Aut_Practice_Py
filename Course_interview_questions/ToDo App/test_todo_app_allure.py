@@ -91,29 +91,37 @@ class TestToDoActionsApp:
             # Assertions about expected exceptions -
             # https://docs.pytest.org/en/latest/how-to/assert.html#assertions-about-expected-exceptions
 
+    @allure.title("TC 03 - Rename a task")
+    @allure.description("Create new task and rename it")
+    def test_tc03(self):
+        try:
+            self.step_add_task3()
+            self.step_rename_task()
+
+        except Exception as error:
+            print(error)
+            pytest.fail("View screen shot")
+
+        finally:
+            take_screenshot(driver)
+
+    @allure.step("Create test3 task")
+    def step_add_task3(self):
+        todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
+        todo_bar.send_keys("test3" + Keys.RETURN)
+
+    @allure.step("Rename 'test3' to 'NewTest' ")
+    def step_rename_task(self):
+        action = ActionChains(driver)
+        textfield = driver.find_elements(By.XPATH, "//div[@class='view']/label")[0]
+        #driver.execute_script("arguments[0].contentEditable='true';", textfield)
+        action.double_click(textfield).perform()
+        driver.find_elements(By.CSS_SELECTOR, "li.editing")[0].clear()
 
 
-
-    #
-    # @allure.title("TC 03 - Rename an assignment")
-    # @allure.description("Create new assignment and rename it")
-    # def test_tc02(self):
-    #     try:
-    #
-    #     except:
-    #         pytest.fail("View screen shot")
-    #
-    #     finally:
-    #         screenshot()
-    #
     # @allure.step("")
     # def step_(self):
-    #
-    # @allure.step("")
-    # def step_(self):
-    #
-    #
-    #
+
     # @allure.title("TC 04 - Mark assignment as completed")
     # @allure.description("Create new assignment and mark it as completed")
     # def test_tc02(self):
