@@ -1,5 +1,3 @@
-import sys
-
 import allure
 import pytest
 import time
