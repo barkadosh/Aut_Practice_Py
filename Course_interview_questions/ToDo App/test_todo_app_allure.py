@@ -46,6 +46,7 @@ class TestToDoActionsApp:
 
     @allure.step("Create new task")
     def step_add_task(self):
+        time.sleep(2)
         todo_bar = driver.find_element(By.CLASS_NAME, "new-todo")
         todo_bar.send_keys("New Task" + Keys.RETURN)
 
