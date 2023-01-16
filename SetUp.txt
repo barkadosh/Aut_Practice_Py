@@ -40,3 +40,10 @@ To run with allure: "pytest -v -s test_actions.py --alluredir ./allure-results"
 To start the server and open the report: "allure serve allure-results"
 To stop the server: Ctrl+c > y
 **********************************************************************************
+
+*********** Applitools Eye ***********
+
+Installation: pip install eyes-selenium
+Login in: https://auth.applitools.com/users/login? (github)
+
+**********************************************************************************

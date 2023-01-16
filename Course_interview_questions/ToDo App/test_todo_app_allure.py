@@ -233,3 +233,4 @@ class TestToDoActionsApp:
     def step_validate_completed_delete(self):
         with pytest.raises(NoSuchElementException):
             driver.find_element(By.CSS_SELECTOR, "ul.todo-list>li.completed")
+
