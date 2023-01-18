@@ -33,7 +33,7 @@ class TestWooLoversWeb:
 
     @allure.title("TC 01 - Change filters")
     @allure.description("Change the currency to $, gender to male and price range from low to high")
-    def test_change_currency(self):
+    def test_change_filters(self):
         driver.find_element(By.ID, "onetrust-accept-btn-handler").click()
         driver.find_element(By.XPATH, "//input[@type='button']").click()
         eyes.open(driver, "Change filters", "Change the currency to $, gender to male and price range from low to high")
