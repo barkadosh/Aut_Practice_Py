@@ -1,0 +1,1 @@
+Test 'Change currency on page to US Dollar' of 'Change currency' detected differences! See details at: https://eyes.applitools.com/app/batches/00000251728355266610/00000251728355266469?accountId=uC7pT3e6R0qz0R2dpXaRFA~~

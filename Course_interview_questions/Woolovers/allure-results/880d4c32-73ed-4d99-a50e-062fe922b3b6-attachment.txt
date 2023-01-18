@@ -1,0 +1,1 @@
+[31m[1mERROR   [0m applitools.selenium.command_executor:command_executor.py:169 Re-raising an error received from SDK server: DiffsFoundError("Test 'Change currency on page to US Dollar' of 'Change currency' detected differences! See details at: https://eyes.applitools.com/app/batches/00000251728355502137/00000251728355501996?accountId=uC7pT3e6R0qz0R2dpXaRFA~~")
