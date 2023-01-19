@@ -60,7 +60,7 @@ class TestWooLoversWeb:
         eyes.check_window("After changing price range from low to high")
         eyes.close()
 
-    @allure.title("TC 01 - Verify Price")
+    @allure.title("TC 02 - Verify Price")
     @allure.description("Verify the price of the products in the store are lower than 150$")
     def test_verify_price(self):
         try:
