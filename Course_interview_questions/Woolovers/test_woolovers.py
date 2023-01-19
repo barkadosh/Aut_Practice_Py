@@ -29,7 +29,7 @@ class TestWooLoversWeb:
     @classmethod
     def teardown_class(cls):
         driver.quit()
-        eyes.abort()
+        #eyes.abort()
 
     @allure.title("TC 01 - Change filters")
     @allure.description("Change the currency to $, gender to male and price range from low to high")
@@ -59,3 +59,33 @@ class TestWooLoversWeb:
         driver.find_elements(By.XPATH, "//div[text()='Done']")[15].click()
         eyes.check_window("After changing price range from low to high")
         eyes.close()
+
+    @allure.title("TC 01 - Verify Price")
+    @allure.description("Verify the price of the products in the store are lower than 150$")
+    def test_verify_price(self):
+        driver.find_element(By.ID, "onetrust-accept-btn-handler").click()
+        driver.find_element(By.XPATH, "//input[@type='button']").click()
+        driver.find_element(By.XPATH, "//a[@class='font-weight-bold']").click()
+        driver.find_element(By.XPATH, "//img[@src='//gepi.global-e.com/content/images/flags/il.png']").click()
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "glPopupContent")))
+        currency = Select(driver.find_element(By.ID, "gle_selectedCurrency"))
+        currency.select_by_visible_text("US Dollar")
+        driver.find_element(By.XPATH, "//input[@data-key='SavenClose']").click()
+        time.sleep(1)
+        driver.find_element(By.ID, "dd-Gender").click()
+        time.sleep(1)
+        driver.find_element(By.CSS_SELECTOR, "div.d-lg-flex.filter-group__scroll>a[data-filter-id='161']").click()
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR, "div.d-lg-flex.filter-group__scroll>a[data-filter-id='160']").click()
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR, "div.filter-group__close-all.hidden-xs.hidden-sm").click()
+        driver.find_element(By.ID, "dd-Sort By").click()
+        driver.find_element(By.CSS_SELECTOR, "div.d-lg-flex.filter-group__scroll>a[data-filter-id='0']").click()
+        driver.find_element(By.CSS_SELECTOR, "div.d-lg-flex.filter-group__scroll>a["
+                                             "href='?f=t&filtered&sortby=1&gender=161,&show=24&category=0']").click()
+        driver.find_elements(By.XPATH, "//div[text()='Done']")[15].click()
+        product_price = driver.find_elements(By.CSS_SELECTOR, "div.container.products-container span.pricing__price.pricing__price--new:last-of-type")[1]
+        print(product_price.text)
+
+
