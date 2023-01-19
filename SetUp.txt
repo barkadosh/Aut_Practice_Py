@@ -36,7 +36,7 @@ https://github.com/allure-framework/allure2/releases
 
 install to work with pytest: pip install allure-pytest
 
-To run with allure: "pytest -v -s test_actions.py --alluredir ./allure-results"
+To run with allure: "python -m pytest -v -s test_woolovers.py --alluredir ./allure-results"
 To start the server and open the report: "allure serve allure-results"
 To stop the server: Ctrl+c > y
 **********************************************************************************
