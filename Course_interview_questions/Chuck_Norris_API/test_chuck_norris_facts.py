@@ -51,8 +51,7 @@ class TestChuckNorrisRequests:
             value = 'random'
             response = requests.get(url + value)
             # print(response.json()['value'])
-            file.write(str(num) + ". ")
-            file.write(response.json()['value'] + "\n")
+            file.write(str(num) + ". " + response.json()['value'] + "\n")
             num += 1
             i += 1
 
