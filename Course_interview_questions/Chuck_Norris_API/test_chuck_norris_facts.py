@@ -31,9 +31,9 @@ class TestChuckNorrisRequests:
         search_size_bo = self.get_search_size('Barack Obama')
         search_size_cs = self.get_search_size('Charlie Sheen')
         if search_size_bo > search_size_cs:
-            print(f"Bark Obama have more search results: {search_size_bo} then Charly Sheen: {search_size_cs}")
+            print(f"Bark Obama has more search results: {search_size_bo} then Charly Sheen: {search_size_cs}")
         elif search_size_cs > search_size_bo:
-            print(f"Charly Sheen have more search results: {search_size_cs} then Bark Obama: {search_size_bo}")
+            print(f"Charly Sheen has more search results: {search_size_cs} then Bark Obama: {search_size_bo}")
         else:
             print(f"Charly Sheen and Bark Obama have the same number of search results : {search_size_bo}")
 
