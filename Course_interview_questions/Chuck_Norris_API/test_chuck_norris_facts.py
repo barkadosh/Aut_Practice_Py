@@ -45,14 +45,12 @@ class TestChuckNorrisRequests:
 
     def test_random_chucknorris(self):
         file = open("chuck_norris_jokes.txt", "w")
-        i = 0
-        num = 1
-        while 0 <= i <= 9:
+        i = 1
+        while 1 <= i <= 10:
             value = 'random'
             response = requests.get(url + value)
             # print(response.json()['value'])
-            file.write(str(num) + ". " + response.json()['value'] + "\n")
-            num += 1
+            file.write(str(i) + ". " + response.json()['value'] + "\n")
             i += 1
 
     def test_random_by_category_chucknorris(self):
